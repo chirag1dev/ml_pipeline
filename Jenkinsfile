@@ -21,10 +21,10 @@ pipeline {
                 // Clone Repository
                 script {
                     echo 'set up virtual environment...'
-                    sh "python -m venv ${venv_dir}
+                    sh '''python -m venv ${venv_dir}
                     source ${venv_dir}/bin/activate
                     pip install --upgrade pip
-                    pip install -e ."
+                    pip install -e .'''
                 }
             }
         }
@@ -37,10 +37,10 @@ pipeline {
                     echo 'Linting Python Code...'
                     set -e
                     . ${VENV_DIR}/bin/activate
-                    sh "python3 -m pip install --break-system-packages -r requirements.txt"
-                    sh "pylint app.py train.py --output=pylint-report.txt --exit-zero"
-                    sh "flake8 app.py train.py --ignore=E501,E302 --output-file=flake8-report.txt"
-                    sh "black app.py train.py"
+                    sh ''' python3 -m pip install --break-system-packages -r requirements.txt"
+                    pylint app.py train.py --output=pylint-report.txt --exit-zero"
+                    flake8 app.py train.py --ignore=E501,E302 --output-file=flake8-report.txt"
+                    black app.py train.py '''
                 }
             }
         }
