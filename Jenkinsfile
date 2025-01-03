@@ -35,11 +35,11 @@ pipeline {
                 // Lint code
                 script {
                     echo 'Linting Python Code...'
-                    set -e
+                    sh ''' set -e
                     . ${VENV_DIR}/bin/activate
-                    sh ''' python3 -m pip install --break-system-packages -r requirements.txt"
-                    pylint app.py train.py --output=pylint-report.txt --exit-zero"
-                    flake8 app.py train.py --ignore=E501,E302 --output-file=flake8-report.txt"
+                     python3 -m pip install --break-system-packages -r requirements.txt
+                    pylint app.py train.py --output=pylint-report.txt --exit-zero
+                    flake8 app.py train.py --ignore=E501,E302 --output-file=flake8-report.txt
                     black app.py train.py '''
                 }
             }
