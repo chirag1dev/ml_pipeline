@@ -22,9 +22,8 @@ pipeline {
                 script {
                     echo 'set up virtual environment...'
                     sh '''python3 -m venv ${venv_dir}
-                    source ${venv_dir}/bin/activate
-                    pip install --upgrade pip
-                    pip install -e .'''
+                    bash -c "source ${venv_dir}/bin/activate && pip install --upgrade pip && pip install -e ."
+                    '''
                 }
             }
         }
@@ -35,12 +34,12 @@ pipeline {
                 // Lint code
                 script {
                     echo 'Linting Python Code...'
-                    sh ''' set -e
-                    . ${VENV_DIR}/bin/activate
-                     python3 -m pip install --break-system-packages -r requirements.txt
-                    pylint app.py train.py --output=pylint-report.txt --exit-zero
-                    flake8 app.py train.py --ignore=E501,E302 --output-file=flake8-report.txt
-                    black app.py train.py '''
+                    sh ''' 
+                    bash -c "source ${venv_dir}/bin/activate && \
+                    python3 -m pip install --break-system-packages -r requirements.txt && \
+                    pylint app.py train.py --output=pylint-report.txt --exit-zero && \
+                    flake8 app.py train.py --ignore=E501,E302 --output-file=flake8-report.txt && \
+                    black app.py train.py" '''
                 }
             }
         }
